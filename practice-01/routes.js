@@ -7,57 +7,57 @@ const main = `
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <h1>Hello world</h1>
+    <h1>Enter a username</h1>
     <form action="/create-user" method="POST">
-      <input type="text" name="name"/>
+      <input type="text" name="username"/>
       <button type="submit">Create</button>
     </form>
   </body>
   </html>
 `;
 
-const users = `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <h1>Users</h1>
-    <ul>
-      <li>User1</li>
-      <li>User2</li>
-      <li>User3</li>
-      <li>User4</li>
-      <li>User5</li>
-      <li>User6</li>
-      <li>User7</li>
-      <li>User8</li>
-      <li>User9</li>
-      <li>User10</li>
-      <li>User11</li>
-      <li>User12</li>
-      <li>User13</li>
-      <li>User14</li>
-      <li>User15</li>
-    </ul>
-  </body>
-  </html>
-`;
+const renderUserpage = (userList) => {
+  const users = userList.map(user => (`<li>${user}</li>`)).join('');
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body>
+        <h1>List of users</h1>
+        <ul>${users}</ul>
+      </body>
+    </html>
+  `
+};
+
+const userList = [];
 
 module.exports = {
-  requestHandler: (res, req) => {
+  requestHandler: (req, res) => {
     if (req.url === '/users') {
-      req.write(users);
-      req.end();
+      res.write(renderUserpage(userList));
+      return res.end();
     }
+    if (req.url === '/create-user' && req.method.toUpperCase() === 'POST') {
+      const usernameBuffer = [];
+      req.on('data', (chunk) => {
+        usernameBuffer.push(chunk);
+      });
 
-    // if (req.url === '/create-user' && req.method.toUpperCase() === 'POST') {
+      return req.on('end', () => {
+        const newUser = Buffer.concat(usernameBuffer).toString().split('=')[1];
+        userList.push(newUser);
 
-    // }
-    req.write(main);
-    req.end();
+        res.statusCode = 302;
+        res.setHeader('Location', '/');
+        return res.end();
+      })
+    }
+    res.write(main);
+    res.end();
   },
 }
