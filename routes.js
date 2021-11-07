@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-export const requestHandler = (req, res) => {
+const requestHandler = (req, res) => {
   // console.log(req.url, req.method, req.headers);
   const { url, method } = req;
   if (url === '/') {
@@ -47,3 +47,7 @@ export const requestHandler = (req, res) => {
   res.end(); // send request
   // process.exit(); // to stop watcing mode
 }
+
+module.exports = {
+  requestHandler,
+};
