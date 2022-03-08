@@ -1,18 +1,21 @@
-const express = require("express");
-
+const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(adminRoutes);
+app.use(shopRoutes);
+
 app.use((req, res, next) => {
-  console.log();
   next(); // Allows the request to continue to the next middleware in line
 });
 
-app.use("/users", (req, res, next) => {
-  res.send("<h1>Users</h1>");
+app.use((req, res, next) => {
+  res.status(404).send('<h1>Page not found</h1>');
 });
 
-app.use("/", (req, res, next) => {
-  res.send("<h1>Hello from express</h1>");
-});
-
-app.listen(3000);
+app.listen(3001);
