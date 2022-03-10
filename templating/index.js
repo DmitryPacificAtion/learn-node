@@ -5,8 +5,19 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-app.set('view engine', 'pug');
-app.set('views', './templating/views/pug');
+/*
+** PUG **
+*/
+// app.set('view engine', 'pug');
+// app.set('views', './templating/views/pug');
+
+/*
+** HANDLEBARS **
+*/
+const handlebars = require('express-handlebars'); // import handlebars module
+app.engine('hbs', handlebars()); // define handlebars engine and file extention
+app.set('view engine', 'hbs'); // register engine
+app.set('views', './templating/views/handlebars'); // lookup views
 
 const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -18,7 +29,7 @@ app.use('/admin', adminData.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-    res.status(404).render('shop', { title: 'Page Not Found' });
+    res.status(404).render('404', { title: 'Page Not Found' });
 });
 
 app.listen(3001);
