@@ -15,7 +15,7 @@ const app = express();
 ** HANDLEBARS **
 */
 const handlebars = require('express-handlebars'); // import handlebars module
-app.engine('hbs', handlebars()); // define handlebars engine and file extention
+app.engine('hbs', handlebars({ layoutsDir: 'templating/views/handlebars/layout', defaultLayout: 'main', extname: 'hbs' })); // define handlebars engine and file extention
 app.set('view engine', 'hbs'); // register engine
 app.set('views', './templating/views/handlebars'); // lookup views
 
