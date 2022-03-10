@@ -10,20 +10,13 @@ const products = [];
 
 // /admin/add-product => GET
 router.get("/add-product", (req, res, next) => {
-  /* PUG */
-  // res.render('add-product', { title: 'Add Product', path: '/admin/add-product' });
-
-  /* Handlebars */
-  // res.render("add-product", {
-  //   title: "Add Product",
-  //   path: "/admin/add-product",
-  //   activeAddProduct: true,
-  //   productStyles: true,
-  //   formStyles: true,
-  // });
-
-  /* Ejs */
-  res.render('add-product', { title: 'Add Product', path: '/admin/add-product' });
+  res.render("add-product", {
+    title: "Add Product",
+    path: "/admin/add-product",
+    activeAddProduct: true, // Handlebars
+    productStyles: true, // Handlebars
+    formStyles: true, // Handlebars
+  });
 
 });
 
