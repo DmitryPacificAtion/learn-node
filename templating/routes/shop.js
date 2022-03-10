@@ -10,15 +10,21 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
   const products = adminData.products;
 
-  // res.render('shop', { products, title: 'Shop', path: '/' }); // Pug
-  res.render("shop", {
-    products,
-    title: "Shop",
-    path: "/",
-    hasProducts: products.length > 0,
-    activeShop: true,
-    productStyles: true,
-  }); // Handlebars
+  /* PUG */
+  // res.render('shop', { products, title: 'Shop', path: '/' });
+
+  /* Handlebars */
+  // res.render("shop", {
+  //   products,
+  //   title: "Shop",
+  //   path: "/",
+  //   hasProducts: products.length > 0,
+  //   activeShop: true,
+  //   productStyles: true,
+  // });
+
+  /* Ejs */
+  res.render('shop', { products, title: 'Shop', path: '/' });
 });
 
 module.exports = router;

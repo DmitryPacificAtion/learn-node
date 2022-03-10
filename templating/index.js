@@ -8,16 +8,24 @@ const app = express();
 /*
 ** PUG **
 */
+
 // app.set('view engine', 'pug');
 // app.set('views', './templating/views/pug');
 
 /*
 ** HANDLEBARS **
 */
-const handlebars = require('express-handlebars'); // import handlebars module
-app.engine('hbs', handlebars({ layoutsDir: 'templating/views/handlebars/layout', defaultLayout: 'main', extname: 'hbs' })); // define handlebars engine and file extention
-app.set('view engine', 'hbs'); // register engine
-app.set('views', './templating/views/handlebars'); // lookup views
+
+// const handlebars = require('express-handlebars'); // import handlebars module
+// app.engine('hbs', handlebars({ layoutsDir: 'templating/views/handlebars/layout', defaultLayout: 'main', extname: 'hbs' })); // define handlebars engine and file extention
+// app.set('view engine', 'hbs'); // register engine
+// app.set('views', './templating/views/handlebars'); // lookup views
+
+/*
+** EJS **
+*/
+app.set('view engine', 'ejs');
+app.set('views', './templating/views/ejs');
 
 const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
