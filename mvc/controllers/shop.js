@@ -13,3 +13,7 @@ exports.getProductList = (req, res, next) => {
 exports.getCart = (req, res, next) => {
   res.render("shop/cart", { title: "Cart", path: "/cart" })
 };
+
+exports.getOrders = (req, res, next) => {
+  res.render("shop/orders", { title: "Orders", path: "/orders" })
+};

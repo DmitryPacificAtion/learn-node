@@ -28,8 +28,10 @@
             </p>
           </div>
           <div class="card__actions">
-            <a href="/" class="btn">Edit</a>
-            <button class="btn">Delete</button>
+            <form action="/action/delete-product" method="DELETE">
+              <a href="/action/edit-product" class="btn">Edit</a>
+              <button class="btn" type="submit">Delete</button>
+            </form>
           </div>
         </article>
         <% }) %>
