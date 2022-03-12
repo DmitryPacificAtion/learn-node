@@ -6,7 +6,7 @@ const commonController = require('./controllers/common');
 const app = express();
 
 app.set('view engine', 'ejs');
-app.set('views', './mvc/views');
+app.set('views', './04-mvc/views');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
