@@ -21,6 +21,9 @@ module.exports = class Product {
   }
 
   save() {
+    this.id = Date.now();
+    console.log('save with id: ', this.id);
+
     readProductsFromFile((products) => {
       products.push(this);
       fs.writeFile(filePath, JSON.stringify(products), (error) => {
@@ -31,7 +34,14 @@ module.exports = class Product {
     });
   }
 
-  static getAll(callback) {
+  static fetchAll(callback) {
     readProductsFromFile(callback);
+  }
+
+  static findById(id, callback) {
+    readProductsFromFile(products => {
+      const product = products.find(({ id: productId }) => id == productId) || {};
+      callback(product);
+    });
   }
 };

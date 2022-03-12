@@ -16,7 +16,7 @@ exports.addNewProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.getAll((products) =>
+  Product.fetchAll((products) =>
     res.render("admin/product-list", { products, title: "Admin Products", path: "/admin/products" })
   );
 };
