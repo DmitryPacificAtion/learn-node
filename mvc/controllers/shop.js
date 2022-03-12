@@ -22,8 +22,8 @@ exports.getProductDetails = (req, res, next) => {
   );
 };
 
-exports.getCart = (req, res, next) => {
-  res.render("shop/cart", { title: "Cart", path: "/cart" });
+exports.getCard = (req, res, next) => {
+  res.render("shop/card", { title: "Card", path: "/card" });
 };
 
 exports.getOrders = (req, res, next) => {
