@@ -1,7 +1,6 @@
 const fs = require('fs');
 
 const requestHandler = (req, res) => {
-  // console.log(req.url, req.method, req.headers);
   const { url, method } = req;
   if (url === '/') {
     res.write(`

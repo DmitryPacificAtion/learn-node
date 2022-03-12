@@ -22,13 +22,12 @@ module.exports = class Product {
 
   save() {
     this.id = Date.now();
-    console.log('save with id: ', this.id);
 
     readProductsFromFile((products) => {
       products.push(this);
       fs.writeFile(filePath, JSON.stringify(products), (error) => {
         if (error) {
-          console.log(error);
+          console.error(error);
         }
       });
     });

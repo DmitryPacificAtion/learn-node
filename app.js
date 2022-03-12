@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const app = express();
 
 app.use((req, res, next) => {
-  console.log();
   next(); // Allows the request to continue to the next middleware in line
 });
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,7 +16,6 @@ app.get("/add-product", (req, res, next) => {
   `);
 });
 app.post("/product", (req, res, next) => {
-  console.log(req.body);
   res.redirect("/");
 });
 
