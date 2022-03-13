@@ -22,8 +22,8 @@ exports.getProductList = (req, res, next) => {
 };
 
 exports.getProductDetails = (req, res, next) => {
-  const id = req.params.productId;
-  Product.findById(id, (product) =>
+  const { productId } = req.params;
+  Product.findById(productId, (product) =>
     res.render("shop/product-details", {
       product,
       title: product.title,

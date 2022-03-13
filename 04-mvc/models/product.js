@@ -12,8 +12,17 @@ const readProductsFromFile = (callback) => {
   });
 };
 
+const saveToFile = (products) => {
+  fs.writeFile(filePath, JSON.stringify(products), (error) => {
+    if (error) {
+      console.error(error);
+    }
+  });
+};
+
 module.exports = class Product {
-  constructor(title, description, imageUrl, price) {
+  constructor(id, title, description, imageUrl, price) {
+    this.id = id;
     this.title = title;
     this.description = description;
     this.imageUrl = imageUrl;
@@ -21,15 +30,17 @@ module.exports = class Product {
   }
 
   save() {
-    this.id = Date.now();
-
     readProductsFromFile((products) => {
-      products.push(this);
-      fs.writeFile(filePath, JSON.stringify(products), (error) => {
-        if (error) {
-          console.error(error);
-        }
-      });
+      if (this.id) {
+        const index = products.findIndex(({ id }) => id == this.id);
+        const updatedProds = [...products];
+        updatedProds[index] = this;
+        saveToFile(updatedProds);
+      } else {
+        this.id = Date.now();
+        products.push(this);
+        saveToFile(products);
+      }
     });
   }
 
@@ -38,8 +49,9 @@ module.exports = class Product {
   }
 
   static findById(id, callback) {
-    readProductsFromFile(products => {
-      const product = products.find(({ id: productId }) => id == productId) || {};
+    readProductsFromFile((products) => {
+      const product =
+        products.find(({ id: productId }) => id == productId) || {};
       callback(product);
     });
   }
