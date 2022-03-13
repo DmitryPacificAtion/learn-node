@@ -1,1 +1,23 @@
-[{"title":"Совершенный код","description":"Совершенный код","imageUrl":"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1327243093l/10543427.jpg","price":"12.99","id":1647118178978}]
+[
+  {
+    "title": "Совершенный код",
+    "description": "Совершенный код",
+    "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1327243093l/10543427.jpg",
+    "price": "12.99",
+    "id": 1647118178978
+  },
+  {
+    "title": "Совершенный код 2",
+    "description": "Совершенный код 2",
+    "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1327243093l/10543427.jpg",
+    "price": "13.99",
+    "id": 1647118178979
+  },
+  {
+    "title": "Совершенный код 3",
+    "description": "Совершенный код 3",
+    "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1327243093l/10543427.jpg",
+    "price": "15.99",
+    "id": 1647118178980
+  }
+]

@@ -39,7 +39,7 @@ exports.getBasket = (req, res, next) => {
 exports.saveToBasket = (req, res, next) => {
   const { productId } = req.body;
   Product.findById(productId, (product) =>
-    Basket.addProduct(productId, product.pice)
+    Basket.addProduct(productId, +product.price)
   );
   res.redirect("/basket");
 };

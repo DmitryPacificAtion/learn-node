@@ -5,37 +5,47 @@ const rootDir = require("../util/path");
 const filePath = path.join(rootDir, "data", "basket.json");
 
 module.exports = class Basket {
+  static __basket = { products: [], totalPrice: 0 };
+
+  static __increasePriceAndAmount(index) {
+    ++this.__basket.products[index].amount;
+    this.__basket.products[index].price *= this.__basket.products[index].amount;
+  }
+
+  static __addNewToBasket(id, productPrice) {
+    this.__basket.products.push({id, amount: 1, price: productPrice});
+  }
+
+  static __increaseTotalPrice() {
+    const total = this.__basket.products.reduce(
+      (acc, cur) => acc + cur.price,
+      0
+    );
+    this.__basket.totalPrice = total;
+  }
+
   static addProduct(id, productPrice) {
     // Fetch previous data from basket
     fs.readFile(filePath, (error, file) => {
-      let basket = { products: [], totalPrice: 0 };
-
       if (!error) {
-        basket = JSON.parse(file);
+        try {
+          this.__basket = JSON.parse(file);
+        } catch {
+          throw Error('Checkout existing basket.json');
+        }
       }
 
-      // Analyze the basket and find existing products
-      const existingProductsIndex = basket.products.findIndex(
+      const index = this.__basket.products.findIndex(
         ({ id: productId }) => productId === id
       );
+      const existingProducts = this.__basket.products[index];
 
-      const existingProducts = basket.products[existingProductsIndex];
+      existingProducts
+        ? this.__increasePriceAndAmount(index)
+        : this.__addNewToBasket(id, productPrice);
+      this.__increaseTotalPrice();
 
-      let updatedProducts;
-      // Add new product / increase amount
-
-      if (existingProducts) {
-        updatedProducts = { ...existingProducts };
-        updatedProducts.amount = updatedProducts.amount + 1;
-        basket.products = [...basket.products];
-        basket.products[existingProductsIndex] = updatedProducts;
-      } else {
-        updatedProducts = { id, amount: 1 };
-        basket.products = [...basket.products, updatedProducts];
-      }
-      basket.totalPrice = basket.totalPrice + +productPrice;
-
-      fs.writeFile(filePath, JSON.stringify(basket), (error) => {
+      fs.writeFile(filePath, JSON.stringify(this.__basket), (error) => {
         console.error(error);
       });
     });
