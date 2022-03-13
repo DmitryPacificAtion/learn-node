@@ -48,11 +48,11 @@ module.exports = class Product {
 
   static delete(productId) {
     readProductsFromFile((products) => {
-      const { price } = products.find(({ id }) => id === productId)
+      // const { price } = products.find(({ id }) => id === productId)
       const updatedProds = products.filter(({ id }) => id !== productId);
       fs.writeFile(filePath, JSON.stringify(updatedProds), (error) => {
         if (!error) {
-          Basket.delete(productId, price)
+          Basket.delete(productId);
         }
       });
     });

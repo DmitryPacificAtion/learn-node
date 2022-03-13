@@ -58,12 +58,13 @@ module.exports = class Basket {
     });
   }
 
-  static delete(productId, productPrice) {
+  static delete(productId) {
     fs.readFile(filePath, (error, file) => {
       if (error) {
         return;
       }
       const updatedCard = { ...JSON.parse(file) };
+
       const { amount } = updatedCard.find(({ id }) => id === productId);
       updatedCard.products = updatedCard.products.filter(
         ({ id }) => id !== productId
