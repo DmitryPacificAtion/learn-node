@@ -2,34 +2,41 @@ const Product = require("../models/product");
 const Basket = require("../models/Basket");
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) =>
-    res.render("shop/index", {
-      products,
-      title: "Shop",
-      path: "/",
+  Product.fetchAll()
+    .then(([products]) => {
+      res.render("shop/index", {
+        products,
+        title: "Shop",
+        path: "/",
+      });
     })
-  );
+    .catch((error) => console.error(error));
 };
 
 exports.getProductList = (req, res, next) => {
-  Product.fetchAll((products) =>
-    res.render("shop/product-list", {
-      products,
-      title: "Product list",
-      path: "/products",
+  Product.fetchAll()
+    .then(([products]) => {
+      res.render("shop/product-list", {
+        products,
+        title: "Product list",
+        path: "/products",
+      });
     })
-  );
+    .catch((error) => console.error(error));
 };
 
 exports.getProductDetails = (req, res, next) => {
   const { productId } = req.params;
-  Product.findById(productId, (product) =>
-    res.render("shop/product-details", {
-      product,
-      title: product.title,
-      path: `/products/${product.id}`,
+  Product.findById(productId)
+    .then(([row]) => {
+      const [product] = row;
+      res.render("shop/product-details", {
+        product,
+        title: product.title,
+        path: `/products/${product.id}`,
+      });
     })
-  );
+    .catch((err) => console.error(err));
 };
 
 exports.getBasket = (req, res, next) => {
