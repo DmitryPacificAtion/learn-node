@@ -31,7 +31,7 @@ module.exports = class Basket {
         try {
           this.__basket = JSON.parse(file);
         } catch {
-          throw Error('Checkout existing basket.json');
+          throw Error("Checkout existing basket.json. Delete it if it's empty");
         }
       }
 
