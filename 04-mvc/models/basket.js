@@ -75,4 +75,14 @@ module.exports = class Basket {
       // this.__updateTotalPrice();
     });
   }
+
+  static getBasket(callback) {
+    fs.readFile(filePath, (error, file) => {
+      const basket = JSON.parse(file);
+      if (error) {
+        callback(null);
+      }
+      callback(basket);
+    });
+  }
 };

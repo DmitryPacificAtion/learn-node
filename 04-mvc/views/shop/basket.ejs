@@ -8,7 +8,17 @@
   <body>
     <%- include('../layout/navigation.ejs') %>
     <main>
-        <h1>Basket</h1>
+      <% if (products.length > 0) { %>
+      <ul>
+        <% products.forEach(product => { %>
+          <li>
+            <%=product.title %> (<%=product.amount %>)
+          </li>
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <h1>Basket is empty</h1>
+      <% } %>
     </main>
     <%- include('../layout/end-scripts.ejs') %>
   </body>

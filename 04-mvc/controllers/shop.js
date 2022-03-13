@@ -33,7 +33,17 @@ exports.getProductDetails = (req, res, next) => {
 };
 
 exports.getBasket = (req, res, next) => {
-  res.render("shop/basket", { title: "Basket", path: "/basket" });
+  Basket.getBasket((basket) => {
+    Product.fetchAll((products) => {
+      const items = products.map((product) =>{
+        const { id: productId } = product;
+        const item = basket.products.find(({ id: basketId }) => basketId == productId);
+        return { ...product, amount: item.amount };
+      }).filter(i => i);
+
+      res.render("shop/basket", { title: "Basket", path: "/basket", products: items });
+    });
+  });
 };
 
 exports.saveToBasket = (req, res, next) => {
