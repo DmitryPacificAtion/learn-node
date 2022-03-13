@@ -1,7 +1,16 @@
 const fs = require("fs");
 const path = require("path");
 const rootDir = require("../util/path");
+const Basket = require("./basket");
 const filePath = path.join(rootDir, "data", "products.json");
+
+const saveToFile = (products) => {
+  fs.writeFile(filePath, JSON.stringify(products), (error) => {
+    if (error) {
+      console.error(error);
+    }
+  });
+};
 
 const readProductsFromFile = (callback) => {
   fs.readFile(filePath, (error, file) => {
@@ -9,14 +18,6 @@ const readProductsFromFile = (callback) => {
       return callback([]);
     }
     callback(JSON.parse(file));
-  });
-};
-
-const saveToFile = (products) => {
-  fs.writeFile(filePath, JSON.stringify(products), (error) => {
-    if (error) {
-      console.error(error);
-    }
   });
 };
 
@@ -32,15 +33,28 @@ module.exports = class Product {
   save() {
     readProductsFromFile((products) => {
       if (this.id) {
-        const index = products.findIndex(({ id }) => id == this.id);
+        const index = products.findIndex(({ id }) => id === this.id);
         const updatedProds = [...products];
         updatedProds[index] = this;
         saveToFile(updatedProds);
       } else {
-        this.id = Date.now();
+        this.id = +Date.now();
         products.push(this);
         saveToFile(products);
       }
+    });
+  }
+
+
+  static delete(productId) {
+    readProductsFromFile((products) => {
+      const { price } = products.find(({ id }) => id === productId)
+      const updatedProds = products.filter(({ id }) => id !== productId);
+      fs.writeFile(filePath, JSON.stringify(updatedProds), (error) => {
+        if (!error) {
+          Basket.delete(productId, price)
+        }
+      });
     });
   }
 

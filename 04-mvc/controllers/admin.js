@@ -50,8 +50,15 @@ exports.getProducts = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
-  const product = new Product(id, title, description, imageUrl, price);
+  const product = new Product(+id, title, description, imageUrl, price);
   product.save();
+
+  res.redirect("/admin/products");
+};
+
+exports.deleteProduct = (req, res, next) => {
+  const { id } = req.params;
+  Product.delete(id);
 
   res.redirect("/admin/products");
 };
