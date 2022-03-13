@@ -9,13 +9,21 @@
     <%- include('../layout/navigation.ejs') %>
     <main>
       <% if (products.length > 0) { %>
-      <ul>
+      <ol>
         <% products.forEach(product => { %>
           <li>
-            <%=product.title %> (<%=product.amount %>)
+            <p>Name: <%=product.title %></p>
+            <p>Price per one: <%=product.price %></p>
+            <p>Quantity: <%=product.amount %></p>
+            <p><strong>Total price: <%=product.amount * product.price %></strong></p>
+            <form action="/remove-basket-item" method="POST">
+              <button class="btn" type="submit">Remove</button>
+              <input type="hidden" name="productId" value="<%= product.id %>"/>
+            </form>
           </li>
+          <hr />
         <% }) %>
-      </ul>
+        </ol>
       <% } else { %>
       <h1>Basket is empty</h1>
       <% } %>

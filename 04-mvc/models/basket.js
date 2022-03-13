@@ -65,11 +65,15 @@ module.exports = class Basket {
       }
       const updatedCard = { ...JSON.parse(file) };
 
-      const { amount } = updatedCard.find(({ id }) => id === productId);
+      const product = updatedCard.products.find(({ id }) => id == productId);
+
+      if (!product) {
+        return;
+      }
       updatedCard.products = updatedCard.products.filter(
         ({ id }) => id !== productId
       );
-      updatedCard.totalPrice = updatedCard.totalPrice - productPrice * amount;
+      updatedCard.totalPrice = updatedCard.totalPrice - product.price;
 
       saveToFile(updatedCard);
       // this.__updateTotalPrice();

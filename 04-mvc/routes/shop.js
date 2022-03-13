@@ -7,9 +7,8 @@ router.get("/basket", productsController.getBasket);
 router.post("/basket", productsController.saveToBasket);
 router.get("/orders", productsController.getOrders);
 router.get("/products", productsController.getProductList);
+router.post("/remove-basket-item", productsController.removeFromBasket);
 
-
-// Dynamic routes
 router.get("/products/:productId", productsController.getProductDetails);
 
 module.exports = router;
