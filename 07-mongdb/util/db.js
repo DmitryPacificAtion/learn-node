@@ -7,14 +7,11 @@ const uri =
 // Create a new MongoClient
 const client = new MongoClient(uri);
 
-let __db;
 async function mongoConnect(callback) {
   try {
     // Connect the client to the server
     await client.connect();
     // Establish and verify connection
-    __db = await client.db();
-
     callback();
   } catch (error) {
     console.error(error);
@@ -25,11 +22,9 @@ async function mongoConnect(callback) {
   }
 }
 
-const getDB = () => {
-  if (__db) {
-    return __db;
-  }
-  throw 'No database found!';
+const getDB = async () => {
+  // Establish and verify connection
+  return client.db();
 };
 
 exports.mongoConnect = mongoConnect;

@@ -1,4 +1,4 @@
-const { mongoConnect, db } = require('../util/db');
+const { getDB } = require('../util/db');
 
 class Product {
   constructor(id, title, description, imageUrl, price) {
@@ -10,22 +10,23 @@ class Product {
   }
 
   save() {
-    return db.execute(
-      "INSERT INTO products (title, description, imageUrl, price) VALUES (?, ?, ?, ?)",
-      [this.title, this.description, this.imageUrl, this.price]
-    );
+    const db = getDB();
+    db.collection('products')
+      .insertOne(this)
+      .then((result) => console.log('save products', result))
+      .catch((error) => console.error(error));
   }
 
   static delete(productId) {}
 
   static fetchAll() {
-    return db.execute("SELECT * FROM products");
+    return db.execute('SELECT * FROM products');
   }
 
   static findById(id) {
-    return db.execute("SELECT * FROM products WHERE products.id = ?", [id]);
+    return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
   }
-};
+}
 
 // Product.init({
 //   id: {
