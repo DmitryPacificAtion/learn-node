@@ -16,9 +16,11 @@ exports.getEditProduct = (req, res, next) => {
   }
 
   const { productId } = req.params;
+
   Product.findById(productId)
-    .then(([product]) => {
+    .then((product) => {
       if (!product) {
+        console.log('poo', productId);
         return res.redirect('/');
       }
 
@@ -34,40 +36,44 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.addNewProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
-  Product.create({
-    title,
-    description,
-    imageUrl,
-    price,
-  })
-    .then((result) => {
-      console.log('Product was created with id#', result.id);
+  const product = new Product({ title, description, imageUrl, price });
+  product
+    .save()
+    .then(() => {
+      res.redirect('/admin/products');
     })
     .catch((error) => console.error(error));
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) =>
-    res.render('admin/product-list', {
-      products,
-      title: 'Admin Products',
-      path: '/admin/products',
-    })
-  );
+  Product.find()
+    .then((products) =>
+      res.render('admin/product-list', {
+        products,
+        title: 'Admin Products',
+        path: '/admin/products',
+      })
+    )
+    .catch((error) => console.error(error));
 };
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
-  const product = new Product(+id, title, description, imageUrl, price);
-  product
-    .save()
+  Product.findById(id)
+    .then((product) => {
+      product.title = title;
+      product.description = description;
+      product.imageUrl = imageUrl;
+      product.price = price;
+      return product.save();
+    })
     .then(() => res.redirect('/admin/products'))
-    .catch((e) => console.error(e));
+    .catch((error) => console.error(error));
 };
 
 exports.deleteProduct = (req, res, next) => {
   const { productId } = req.params;
-  Product.delete(+productId)
+  Product.findByIdAndRemove(productId)
     .then(() => res.redirect('/admin/products'))
     .catch((e) => console.error(e));
 };
