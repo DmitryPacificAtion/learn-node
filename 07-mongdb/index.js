@@ -7,7 +7,7 @@ const { mongoConnect } = require('./util/db');
 const app = express();
 
 app.set('view engine', 'ejs');
-app.set('views', './05-mysql/views');
+app.set('views', './06-sequelize/views');
 
 const adminRoutes = require('./routes/admin');
 // const shopRoutes = require('./routes/shop');
