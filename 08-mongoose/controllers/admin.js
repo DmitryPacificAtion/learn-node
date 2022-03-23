@@ -5,8 +5,24 @@ exports.getAddProduct = (req, res, next) => {
     title: 'Add Product',
     path: '/admin/add-product',
     editMode: false,
-    product: {},
   });
+};
+
+exports.postAddProduct = (req, res, next) => {
+  const { title, description, imageUrl, price } = req.body;
+  const product = new Product({
+    title,
+    description,
+    imageUrl,
+    price,
+    userId: req.user._id,
+  });
+  product
+    .save()
+    .then(() => {
+      res.redirect('/admin/products');
+    })
+    .catch((error) => console.error(error));
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -20,13 +36,12 @@ exports.getEditProduct = (req, res, next) => {
   Product.findById(productId)
     .then((product) => {
       if (!product) {
-        console.log('poo', productId);
         return res.redirect('/');
       }
 
       res.render('admin/manage-product', {
         title: 'Edit Product',
-        path: `/admin/edit-product/${product.id}`,
+        path: `/admin/edit-product/${product._id}`,
         editMode,
         product,
       });
@@ -34,28 +49,6 @@ exports.getEditProduct = (req, res, next) => {
     .catch((e) => console.error(e));
 };
 
-exports.addNewProduct = (req, res, next) => {
-  const { title, description, imageUrl, price } = req.body;
-  const product = new Product({ title, description, imageUrl, price });
-  product
-    .save()
-    .then(() => {
-      res.redirect('/admin/products');
-    })
-    .catch((error) => console.error(error));
-};
-
-exports.getProducts = (req, res, next) => {
-  Product.find()
-    .then((products) =>
-      res.render('admin/product-list', {
-        products,
-        title: 'Admin Products',
-        path: '/admin/products',
-      })
-    )
-    .catch((error) => console.error(error));
-};
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
@@ -68,6 +61,21 @@ exports.postEditProduct = (req, res, next) => {
       return product.save();
     })
     .then(() => res.redirect('/admin/products'))
+    .catch((error) => console.error(error));
+};
+
+exports.getProducts = (req, res, next) => {
+  Product.find()
+    /*  Обогащаем данные из другой модели */
+    // .select('title name -_id') // select some fields from User
+    // .populate('userId', 'name') // select some fields from User
+    .then((products) => {
+      res.render('admin/product-list', {
+        products,
+        title: 'Admin Products',
+        path: '/admin/products',
+      });
+    })
     .catch((error) => console.error(error));
 };
 
