@@ -15,7 +15,7 @@
             <p>Name: <%=product.productId.title %></p>
             <p>Price per one: <%=product.productId.price %></p>
             <p>Quantity: <%=product.productId.amount %></p>
-            <p><strong>Total price: <%=product.productId.amount * product.productId.price %></strong></p>
+            <p><strong>Total price: <%=product.amount * product.productId.price %></strong></p>
             <form action="/remove-basket-item" method="POST">
               <button class="btn" type="submit">Remove</button>
               <input type="hidden" name="productId" value="<%= product.productId._id %>"/>
@@ -24,6 +24,9 @@
           <hr />
         <% }) %>
         </ol>
+        <form action="/create-order" method="POST">
+          <button class="btn" type="submit">Order now</button>
+        </form>
       <% } else { %>
       <h1>Basket is empty</h1>
       <% } %>

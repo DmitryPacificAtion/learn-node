@@ -1,11 +1,10 @@
 const Product = require('../models/product');
-// const Basket = require('../models/Basket');
+const Order = require('../models/order');
 
 // getProducts
 exports.getProductList = (req, res, next) => {
   Product.find()
     .then((products) => {
-      console.log('products', products);
       res.render('shop/product-list', {
         products,
         title: 'Product list',
@@ -67,23 +66,47 @@ exports.postBasket = (req, res, next) => {
     .catch((error) => console.error(error));
 };
 
-exports.getOrders = (req, res, next) => {
-  req.user
-    .getOrders()
+exports.getOrder = (req, res, next) => {
+  Order.find({ 'user.userId': req.user._id })
     .then((orders) => {
       res.render('shop/orders', {
         path: '/orders',
-        pageTitle: 'Your Orders',
+        title: 'Orders',
         orders: orders,
       });
     })
     .catch((err) => console.log(err));
 };
 
+exports.postOrder = (req, res, next) => {
+  console.log('postOrder', req.user);
+  req.user
+    .populate('basket.items.productId')
+    .then((user) => {
+      const products = user.basket.items.map(({ amount, productId }) => ({
+        amount,
+        product: { ...productId._doc },
+      }));
+      const order = new Order({
+        user: {
+          name: req.user.name,
+          userId: req.user,
+        },
+        products,
+      });
+      console.log('order', order);
+      console.log('products', products);
+      return order.save();
+    })
+    .then(() => req.user.clearBasket())
+    .then(() => res.redirect('/orders'))
+    .catch((error) => console.error(error));
+};
+
 exports.getCheckout = (req, res, next) => {
   res.render('shop/checkout', {
     path: '/checkout',
-    pageTitle: 'Checkout',
+    title: 'Checkout',
   });
 };
 

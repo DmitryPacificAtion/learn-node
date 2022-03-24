@@ -52,7 +52,7 @@ userSchema.methods.addToBasket = function (product) {
   return this.save();
 };
 
-userSchema.methods.removeFromBasket = function(productId) {
+userSchema.methods.removeFromBasket = function (productId) {
   const updatedItems = this.basket.items.filter((item) => {
     return item.productId.toString() !== productId.toString();
   });
@@ -61,12 +61,14 @@ userSchema.methods.removeFromBasket = function(productId) {
   return this.save();
 };
 
+userSchema.methods.clearBasket = function () {
+  this.basket = { items: [] };
+  console.log('this.basket', this.basket);
+  return this.save();
+};
+
+
 module.exports = mongoose.model('User', userSchema);
-
-// const mongodb = require('mongodb');
-// const getDb = require('../util/database').getDb;
-
-// const ObjectId = mongodb.ObjectId;
 
 // class User {
 //   constructor(username, email, cart, id) {
@@ -165,14 +167,6 @@ module.exports = mongoose.model('User', userSchema);
 //             { $set: { cart: { items: [] } } }
 //           );
 //       });
-//   }
-
-//   getOrders() {
-//     const db = getDb();
-//     return db
-//       .collection('orders')
-//       .find({ 'user._id': new ObjectId(this._id) })
-//       .toArray();
 //   }
 
 //   static findById(userId) {
