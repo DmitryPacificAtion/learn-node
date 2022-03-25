@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../layout/meta.ejs') %>
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+
+  <body>
+    <%- include('../layout/navigation.ejs') %>
+    <main>
+      <% if (products.length > 0) { %>
+      <ol>
+        <% products.forEach(product => { %>
+          <li>
+            <p>Name: <%=product.productId.title %></p>
+            <p>Price per one: <%=product.productId.price %></p>
+            <p>Quantity: <%=product.productId.amount %></p>
+            <p><strong>Total price: <%=product.amount * product.productId.price %></strong></p>
+            <form action="/remove-basket-item" method="POST">
+              <button class="btn" type="submit">Remove</button>
+              <input type="hidden" name="productId" value="<%= product.productId._id %>"/>
+            </form>
+          </li>
+          <hr />
+        <% }) %>
+        </ol>
+        <form action="/create-order" method="POST">
+          <button class="btn" type="submit">Order now</button>
+        </form>
+      <% } else { %>
+      <h1>Basket is empty</h1>
+      <% } %>
+    </main>
+    <%- include('../layout/end-scripts.ejs') %>
+  </body>
+</html>
