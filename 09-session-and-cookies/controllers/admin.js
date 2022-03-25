@@ -5,6 +5,7 @@ exports.getAddProduct = (req, res, next) => {
     title: 'Add Product',
     path: '/admin/add-product',
     editMode: false,
+    isAuthenticated: req.isAuthenticated
   });
 };
 
@@ -44,6 +45,7 @@ exports.getEditProduct = (req, res, next) => {
         path: `/admin/edit-product/${product._id}`,
         editMode,
         product,
+        isAuthenticated: req.isAuthenticated
       });
     })
     .catch((e) => console.error(e));
@@ -74,6 +76,7 @@ exports.getProducts = (req, res, next) => {
         products,
         title: 'Admin Products',
         path: '/admin/products',
+        isAuthenticated: req.isAuthenticated
       });
     })
     .catch((error) => console.error(error));
