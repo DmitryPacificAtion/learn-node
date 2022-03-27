@@ -44,7 +44,7 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getBasket = (req, res, next) => {
-  req.session.user
+  req.user
     .populate('basket.items.productId')
     .then((user) => {
       const products = user.basket.items || [];
@@ -62,7 +62,7 @@ exports.postBasket = (req, res, next) => {
   const { productId } = req.body;
   Product.findById(productId)
     .then((product) => {
-      return req.session.user.addToBasket(product);
+      return req.user.addToBasket(product);
     })
     .then(() => {
       res.redirect('/basket');
@@ -71,7 +71,7 @@ exports.postBasket = (req, res, next) => {
 };
 
 exports.getOrder = (req, res, next) => {
-  Order.find({ 'user.userId': req.session.user._id })
+  Order.find({ 'user.userId': req.user._id })
     .then((orders) => {
       res.render('shop/orders', {
         path: '/orders',
@@ -84,8 +84,8 @@ exports.getOrder = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  console.log('postOrder', req.session.user);
-  req.session.user
+  console.log('postOrder', req.user);
+  req.user
     .populate('basket.items.productId')
     .then((user) => {
       const products = user.basket.items.map(({ amount, productId }) => ({
@@ -94,8 +94,8 @@ exports.postOrder = (req, res, next) => {
       }));
       const order = new Order({
         user: {
-          name: req.session.user.name,
-          userId: req.session.user,
+          name: req.user.name,
+          userId: req.user,
         },
         products,
       });
@@ -103,7 +103,7 @@ exports.postOrder = (req, res, next) => {
       console.log('products', products);
       return order.save();
     })
-    .then(() => req.session.user.clearBasket())
+    .then(() => req.user.clearBasket())
     .then(() => res.redirect('/orders'))
     .catch((error) => console.error(error));
 };
@@ -118,7 +118,7 @@ exports.getCheckout = (req, res, next) => {
 
 exports.removeFromBasket = (req, res, next) => {
   const { productId } = req.body;
-  req.session.user
+  req.user
     .removeFromBasket(productId)
     .then(() => {
       res.redirect('/basket');

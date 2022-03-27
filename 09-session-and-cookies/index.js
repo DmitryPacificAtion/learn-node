@@ -34,6 +34,21 @@ app.use(
   })
 );
 
+// Make user.addToBasket (and etc.) work again after moving user to session storage
+app.use((req, res, next) => {
+  if (req.session.user) {
+    return User.findById(req.session.user._id)
+      .then((user) => {
+        console.log('user', user);
+        req.user = user;
+        console.log('req', req);
+        next();
+      })
+      .catch((error) => console.error(error));
+  }
+  next();
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);

@@ -14,7 +14,10 @@ exports.postLogin = (req, res, next) => {
     .then((user) => {
       req.session.user = user;
       req.session.isAuthenticated = true;
-      res.redirect('/');
+      req.session.save((err) => {
+        console.log(err)
+        res.redirect('/'); // do a redirect only after saving session in mongoose
+      });
     })
     .catch((error) => console.error(error));
 };
@@ -22,6 +25,6 @@ exports.postLogin = (req, res, next) => {
 exports.postLogout = (req, res, next) => {
   return req.session.destroy((err) => {
     console.log('Logout error: ', err);
-    res.redirect('/')
+    res.redirect('/');
   });
 };
