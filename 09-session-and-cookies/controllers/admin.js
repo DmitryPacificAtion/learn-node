@@ -1,11 +1,11 @@
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
-  res.render('admin/manage-product', {
+  return res.render('admin/manage-product', {
     title: 'Add Product',
     path: '/admin/add-product',
     editMode: false,
-    isAuthenticated: req.isAuthenticated
+    isAuthenticated: req.session.isAuthenticated
   });
 };
 
@@ -16,7 +16,7 @@ exports.postAddProduct = (req, res, next) => {
     description,
     imageUrl,
     price,
-    userId: req.user._id,
+    userId: req.session.user._id,
   });
   product
     .save()
@@ -45,7 +45,7 @@ exports.getEditProduct = (req, res, next) => {
         path: `/admin/edit-product/${product._id}`,
         editMode,
         product,
-        isAuthenticated: req.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated
       });
     })
     .catch((e) => console.error(e));
@@ -76,7 +76,7 @@ exports.getProducts = (req, res, next) => {
         products,
         title: 'Admin Products',
         path: '/admin/products',
-        isAuthenticated: req.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated
       });
     })
     .catch((error) => console.error(error));

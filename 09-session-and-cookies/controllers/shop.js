@@ -9,7 +9,7 @@ exports.getProductList = (req, res, next) => {
         products,
         title: 'Product list',
         path: '/products',
-        isAuthenticated: req.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((error) => console.error(error));
@@ -24,7 +24,7 @@ exports.getProductDetails = (req, res, next) => {
         product,
         title: product.title,
         path: `/products/${product._id}`,
-        isAuthenticated: req.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((error) => console.error(error));
@@ -37,14 +37,14 @@ exports.getIndex = (req, res, next) => {
         products,
         title: 'Shop',
         path: '/',
-        isAuthenticated: req.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((error) => console.error(error));
 };
 
 exports.getBasket = (req, res, next) => {
-  req.user
+  req.sessionreq.user
     .populate('basket.items.productId')
     .then((user) => {
       const products = user?.basket?.items || [];
@@ -52,7 +52,7 @@ exports.getBasket = (req, res, next) => {
         title: 'Basket',
         path: '/basket',
         products,
-        isAuthenticated: req.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((error) => console.error(error));
@@ -62,7 +62,7 @@ exports.postBasket = (req, res, next) => {
   const { productId } = req.body;
   Product.findById(productId)
     .then((product) => {
-      return req.user.addToBasket(product);
+      return req.session.user.addToBasket(product);
     })
     .then(() => {
       res.redirect('/basket');
@@ -71,21 +71,21 @@ exports.postBasket = (req, res, next) => {
 };
 
 exports.getOrder = (req, res, next) => {
-  Order.find({ 'user.userId': req.user._id })
+  Order.find({ 'user.userId': req.session.user._id })
     .then((orders) => {
       res.render('shop/orders', {
         path: '/orders',
         title: 'Orders',
         orders: orders,
-        isAuthenticated: req.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((err) => console.log(err));
 };
 
 exports.postOrder = (req, res, next) => {
-  console.log('postOrder', req.user);
-  req.user
+  console.log('postOrder', req.session.user);
+  req.session.user
     .populate('basket.items.productId')
     .then((user) => {
       const products = user.basket.items.map(({ amount, productId }) => ({
@@ -94,8 +94,8 @@ exports.postOrder = (req, res, next) => {
       }));
       const order = new Order({
         user: {
-          name: req.user.name,
-          userId: req.user,
+          name: req.session.user.name,
+          userId: req.session.user,
         },
         products,
       });
@@ -103,7 +103,7 @@ exports.postOrder = (req, res, next) => {
       console.log('products', products);
       return order.save();
     })
-    .then(() => req.user.clearBasket())
+    .then(() => req.session.user.clearBasket())
     .then(() => res.redirect('/orders'))
     .catch((error) => console.error(error));
 };
@@ -112,13 +112,13 @@ exports.getCheckout = (req, res, next) => {
   res.render('shop/checkout', {
     path: '/checkout',
     title: 'Checkout',
-    isAuthenticated: req.isAuthenticated
+    isAuthenticated: req.session.isAuthenticated,
   });
 };
 
 exports.removeFromBasket = (req, res, next) => {
   const { productId } = req.body;
-  req.user
+  req.session.user
     .removeFromBasket(productId)
     .then(() => {
       res.redirect('/basket');
