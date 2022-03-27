@@ -11,6 +11,7 @@
           >Products</a
         >
       </li>
+      <% if (isAuthenticated) { %>
       <li class="main-header__item">
         <a class="<%= path === '/basket' ? 'active' : '' %>" href="/basket"
           >Basket</a
@@ -21,22 +22,28 @@
           >Orders</a
         >
       </li>
-      <% if (isAuthenticated) { %>
-        <li class="main-header__item">
-          <a
-            class="<%= path === '/admin/add-product' ? 'active' : '' %>"
-            href="/admin/add-product"
-            >Add Product
-          </a>
-        </li>
-        <li class="main-header__item">
-          <a
-            class="<%= path === '/admin/products' ? 'active' : '' %>"
-            href="/admin/products"
-            >Admin Products
-          </a>
-        </li>
-      <% } %>
+      <li class="main-header__item">
+        <a
+          class="<%= path === '/admin/add-product' ? 'active' : '' %>"
+          href="/admin/add-product"
+          >Add Product
+        </a>
+      </li>
+      <li class="main-header__item">
+        <a
+          class="<%= path === '/admin/products' ? 'active' : '' %>"
+          href="/admin/products"
+          >Admin Products
+        </a>
+      </li>
+    </ul>
+    <ul class="main-header__item-list">
+      <li class="main-header__item">
+        <form action="/logout" method="POST">
+          <button class="btn" type="submit">Logout</button>
+        </form>
+      </li>
+      <% } else { %>
     </ul>
     <ul class="main-header__item-list">
       <li class="main-header__item">
@@ -44,6 +51,7 @@
           >Login</a
         >
       </li>
+      <% } %>
     </ul>
   </nav>
   <!-- Mobile nav -->
@@ -68,20 +76,20 @@
         >
       </li>
       <% if (isAuthenticated) { %>
-        <li class="mobile-nav__item">
-          <a
-            class="<%= path === '/admin/add-product' ? 'active' : '' %>"
-            href="/admin/add-product"
-            >Add Product
-          </a>
-        </li>
-        <li class="mobile-nav__item">
-          <a
-            class="<%= path === '/admin/products' ? 'active' : '' %>"
-            href="/admin/products"
-            >Admin Products
-          </a>
-        </li>
+      <li class="mobile-nav__item">
+        <a
+          class="<%= path === '/admin/add-product' ? 'active' : '' %>"
+          href="/admin/add-product"
+          >Add Product
+        </a>
+      </li>
+      <li class="mobile-nav__item">
+        <a
+          class="<%= path === '/admin/products' ? 'active' : '' %>"
+          href="/admin/products"
+          >Admin Products
+        </a>
+      </li>
       <% } %>
     </ul>
   </nav>

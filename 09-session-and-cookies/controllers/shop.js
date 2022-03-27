@@ -44,10 +44,10 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getBasket = (req, res, next) => {
-  req.sessionreq.user
+  req.session.user
     .populate('basket.items.productId')
     .then((user) => {
-      const products = user?.basket?.items || [];
+      const products = user.basket.items || [];
       res.render('shop/basket', {
         title: 'Basket',
         path: '/basket',
