@@ -51,6 +51,11 @@
           >Login</a
         >
       </li>
+      <li class="main-header__item">
+        <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup"
+          >Signup</a
+        >
+      </li>
       <% } %>
     </ul>
   </nav>
@@ -65,6 +70,7 @@
           >Products</a
         >
       </li>
+      <% if (isAuthenticated) { %>
       <li class="mobile-nav__item">
         <a class="<%= path === '/basket' ? 'active' : '' %>" href="/basket"
           >Basket</a
@@ -75,7 +81,6 @@
           >Orders</a
         >
       </li>
-      <% if (isAuthenticated) { %>
       <li class="mobile-nav__item">
         <a
           class="<%= path === '/admin/add-product' ? 'active' : '' %>"
@@ -89,6 +94,22 @@
           href="/admin/products"
           >Admin Products
         </a>
+      </li>
+      <li class="mobile-nav__item">
+        <form action="/logout" method="post">
+          <button type="submit">Logout</button>
+        </form>
+      </li>
+      <% } else { %>
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/login' ? 'active' : '' %>" href="/login"
+          >Login</a
+        >
+      </li>
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup"
+          >Signup</a
+        >
       </li>
       <% } %>
     </ul>

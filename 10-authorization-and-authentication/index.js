@@ -58,21 +58,6 @@ app.use(commonController.get404Page);
 mongoose
   .connect(MONGO_DB_URI)
   .then(() => {
-    User.findOne()
-      .then((user) => {
-        if (!user) {
-          const user = new User({
-            name: 'Obi Van',
-            email: 'jedi@mail.com',
-            basket: {
-              items: [],
-            },
-          });
-
-          user.save();
-        }
-      })
-      .catch();
     app.listen(3001);
   })
   .catch((error) => console.error(error));
