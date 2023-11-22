@@ -80,7 +80,7 @@ exports.getOrder = (req, res, next) => {
         isAuthenticated: req.session.isAuthenticated,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((error) => console.error(error));
 };
 
 exports.postOrder = (req, res, next) => {
