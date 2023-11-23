@@ -5,7 +5,7 @@ exports.getAddProduct = (req, res, next) => {
     title: 'Add Product',
     path: '/admin/add-product',
     editMode: false,
-    isAuthenticated: req.session.isAuthenticated
+    isAuthenticated: req.session.isAuthenticated,
   });
 };
 
@@ -45,12 +45,11 @@ exports.getEditProduct = (req, res, next) => {
         path: `/admin/edit-product/${product._id}`,
         editMode,
         product,
-        isAuthenticated: req.session.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((e) => console.error(e));
 };
-
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
@@ -76,7 +75,7 @@ exports.getProducts = (req, res, next) => {
         products,
         title: 'Admin Products',
         path: '/admin/products',
-        isAuthenticated: req.session.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
       });
     })
     .catch((error) => console.error(error));

@@ -1,1 +1,9 @@
-{"products":[{"id":"1647203184778","amount":2,"price":98},{"id":"1647118178978","amount":1,"price":12.99},{"id":"62361018eade34db85ddd65c","amount":1,"price":2},{"id":"62377728a0d68972b28d127a","amount":3,"price":0}],"totalPrice":112.99}
+{
+  "products": [
+    { "id": "1647203184778", "amount": 2, "price": 98 },
+    { "id": "1647118178978", "amount": 1, "price": 12.99 },
+    { "id": "62361018eade34db85ddd65c", "amount": 1, "price": 2 },
+    { "id": "62377728a0d68972b28d127a", "amount": 3, "price": 0 }
+  ],
+  "totalPrice": 112.99
+}

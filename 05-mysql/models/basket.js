@@ -1,7 +1,7 @@
-const fs = require("fs");
-const path = require("path");
-const rootDir = require("../util/path");
-const filePath = path.join(rootDir, "data", "basket.json");
+const fs = require('fs');
+const path = require('path');
+const rootDir = require('../util/path');
+const filePath = path.join(rootDir, 'data', 'basket.json');
 
 const saveToFile = (products) => {
   fs.writeFile(filePath, JSON.stringify(products), (error) => {

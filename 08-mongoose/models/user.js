@@ -67,7 +67,6 @@ userSchema.methods.clearBasket = function () {
   return this.save();
 };
 
-
 module.exports = mongoose.model('User', userSchema);
 
 // class User {

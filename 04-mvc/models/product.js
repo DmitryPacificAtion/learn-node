@@ -1,8 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const rootDir = require("../util/path");
-const Basket = require("./basket");
-const filePath = path.join(rootDir, "data", "products.json");
+const fs = require('fs');
+const path = require('path');
+const rootDir = require('../util/path');
+const Basket = require('./basket');
+const filePath = path.join(rootDir, 'data', 'products.json');
 
 const saveToFile = (products) => {
   fs.writeFile(filePath, JSON.stringify(products), (error) => {
@@ -44,7 +44,6 @@ module.exports = class Product {
       }
     });
   }
-
 
   static delete(productId) {
     readProductsFromFile((products) => {

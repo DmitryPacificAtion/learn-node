@@ -15,7 +15,7 @@ exports.postLogin = (req, res, next) => {
       req.session.user = user;
       req.session.isAuthenticated = true;
       req.session.save((err) => {
-        console.log(err)
+        console.log(err);
         res.redirect('/'); // do a redirect only after saving session in mongoose
       });
     })

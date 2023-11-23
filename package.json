@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon 10-authorization-and-authentication/index.js"
+    "start": "nodemon 10-authorization-and-authentication/index.js",
+    "format": "prettier . --write"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.7",
     "mysql2": "^2.3.3",
+    "prettier": "^3.1.0",
     "pug": "^3.0.2",
     "sequelize": "^6.17.0"
   },

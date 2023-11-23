@@ -16,9 +16,9 @@ async function mongoConnect(callback) {
   } catch (error) {
     console.error(error);
     // await client.close();
-  // } finally {
-  //   // Ensures that the client will close when you finish/error
-  //   console.log('client', client);
+    // } finally {
+    //   // Ensures that the client will close when you finish/error
+    //   console.log('client', client);
   }
 }
 

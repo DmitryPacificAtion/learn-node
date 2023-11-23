@@ -49,7 +49,6 @@ exports.getEditProduct = (req, res, next) => {
     .catch((e) => console.error(e));
 };
 
-
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
   Product.findById(id)

@@ -10,27 +10,30 @@ const sequelize = require('../util/db');
 //   },
 // });
 
-const Product = sequelize.define('product', {
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true
+const Product = sequelize.define(
+  'product',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    // For example title: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
-  // For example title: DataTypes.STRING,
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  price: {
-    type: DataTypes.DOUBLE,
-    allowNull: false
-  },
-  imageUrl: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
-}, {sequelize});
-
+  { sequelize }
+);
 
 module.exports = Product;

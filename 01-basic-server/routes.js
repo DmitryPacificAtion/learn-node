@@ -17,7 +17,7 @@ const main = `
 `;
 
 const renderUserpage = (userList) => {
-  const users = userList.map(user => (`<li>${user}</li>`)).join('');
+  const users = userList.map((user) => `<li>${user}</li>`).join('');
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -31,7 +31,7 @@ const renderUserpage = (userList) => {
         <ul>${users}</ul>
       </body>
     </html>
-  `
+  `;
 };
 
 const userList = [];
@@ -55,9 +55,9 @@ module.exports = {
         res.statusCode = 302;
         res.setHeader('Location', '/');
         return res.end();
-      })
+      });
     }
     res.write(main);
     res.end();
   },
-}
+};
