@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Upload your PDF</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/forms.css" />
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+
+  <body>
+    <main>
+      <form class="product-form" action="/analyze-pdf" method="POST">
+        <div class="form-control">
+          <label for="title">Title</label>
+          <input type="file" name="pdf" id="file_input" accept="pdf" />
+        </div>
+
+        <button class="btn" type="submit">Analyze</button>
+      </form>
+    </main>
+  </body>
+</html>
