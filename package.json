@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon 10-authorization-and-authentication/index.js",
-    "format": "prettier . --write"
+    "start": "nodemon 05-mysql/index.js",
+    "format": "prettier -l --write \"**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,16 @@
     "prettier": "^3.1.0",
     "pug": "^3.0.2",
     "sequelize": "^6.17.0"
+  },
+  "resolutions": {
+    "ansi-regex": "5.0.1"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

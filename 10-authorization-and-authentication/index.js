@@ -31,7 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store,
-  })
+  }),
 );
 
 // Make user.addToBasket (and etc.) work again after moving user to session storage

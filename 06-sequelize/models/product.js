@@ -33,7 +33,7 @@ const Product = sequelize.define(
       allowNull: false,
     },
   },
-  { sequelize }
+  { sequelize },
 );
 
 module.exports = Product;

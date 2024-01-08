@@ -7,7 +7,7 @@ exports.getIndex = (req, res, next) => {
       products,
       title: 'Shop',
       path: '/',
-    })
+    }),
   );
 };
 
@@ -17,7 +17,7 @@ exports.getProductList = (req, res, next) => {
       products,
       title: 'Product list',
       path: '/products',
-    })
+    }),
   );
 };
 
@@ -28,7 +28,7 @@ exports.getProductDetails = (req, res, next) => {
       product,
       title: product.title,
       path: `/products/${product.id}`,
-    })
+    }),
   );
 };
 
@@ -39,7 +39,7 @@ exports.getBasket = (req, res, next) => {
         .map((product) => {
           const { id: productId } = product;
           const item = basket.products.find(
-            ({ id: basketId }) => basketId == productId
+            ({ id: basketId }) => basketId == productId,
           );
           if (item) return { ...product, amount: item.amount };
           return null;
@@ -58,7 +58,7 @@ exports.getBasket = (req, res, next) => {
 exports.saveToBasket = (req, res, next) => {
   const { productId } = req.body;
   Product.findById(productId, (product) =>
-    Basket.addProduct(productId, +product.price)
+    Basket.addProduct(productId, +product.price),
   );
   res.redirect('/basket');
 };

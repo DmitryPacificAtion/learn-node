@@ -26,7 +26,7 @@ module.exports = class Basket {
   static __updateTotalPrice() {
     const total = this.__basket.products.reduce(
       (acc, cur) => acc + cur.price,
-      0
+      0,
     );
     this.__basket.totalPrice = total;
   }
@@ -43,7 +43,7 @@ module.exports = class Basket {
       }
 
       const index = this.__basket.products.findIndex(
-        ({ id: productId }) => productId === id
+        ({ id: productId }) => productId === id,
       );
       const existingProducts = this.__basket.products[index];
 
@@ -71,7 +71,7 @@ module.exports = class Basket {
         return;
       }
       updatedCard.products = updatedCard.products.filter(
-        ({ id }) => id !== productId
+        ({ id }) => id !== productId,
       );
       updatedCard.totalPrice = updatedCard.totalPrice - product.price;
 

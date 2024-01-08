@@ -23,7 +23,7 @@ app.engine(
     layoutsDir: '03-templating/views/handlebars/layout',
     defaultLayout: 'main',
     extname: 'hbs',
-  })
+  }),
 ); // define handlebars engine and file extention
 app.set('view engine', 'hbs'); // register engine
 app.set('views', './03-templating/views/handlebars'); // lookup views

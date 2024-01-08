@@ -32,7 +32,7 @@ app.use(commonController.get404Page);
 
 mongoose
   .connect(
-    'mongodb+srv://root:Q!w2e3r4@cluster0.laev3.mongodb.net/Cluster0?retryWrites=true&w=majority'
+    'mongodb+srv://root:Q!w2e3r4@cluster0.laev3.mongodb.net/Cluster0?retryWrites=true&w=majority',
   )
   .then((result) => {
     User.findOne()

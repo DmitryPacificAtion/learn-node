@@ -46,7 +46,7 @@ exports.getBasket = (req, res, next) => {
         .map((product) => {
           const { id: productId } = product;
           const item = basket.products.find(
-            ({ id: basketId }) => basketId == productId
+            ({ id: basketId }) => basketId == productId,
           );
           if (item) return { ...product, amount: item.amount };
           return null;
@@ -65,7 +65,7 @@ exports.getBasket = (req, res, next) => {
 exports.saveToBasket = (req, res, next) => {
   const { productId } = req.body;
   Product.findById(productId, (product) =>
-    Basket.addProduct(productId, +product.price)
+    Basket.addProduct(productId, +product.price),
   );
   res.redirect('/basket');
 };

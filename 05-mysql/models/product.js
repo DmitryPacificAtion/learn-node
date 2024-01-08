@@ -13,7 +13,7 @@ module.exports = class Product {
   save() {
     return db.execute(
       'INSERT INTO products (title, description, imageUrl, price) VALUES (?, ?, ?, ?)',
-      [this.title, this.description, this.imageUrl, this.price]
+      [this.title, this.description, this.imageUrl, this.price],
     );
   }
 

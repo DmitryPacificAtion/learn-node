@@ -38,7 +38,7 @@ router.post(
       console.error('Error:', error);
       res.status(500).send('Error analyzing PDF');
     }
-  }
+  },
 );
 
 module.exports = router;

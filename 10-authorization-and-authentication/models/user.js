@@ -31,7 +31,7 @@ const userSchema = new Schema({
 
 userSchema.methods.addToBasket = function (product) {
   const basketIndex = this.basket.items.findIndex(
-    ({ productId }) => productId.toString() === product._id.toString()
+    ({ productId }) => productId.toString() === product._id.toString(),
   );
   let amount = 1;
   const updatedBasket = [...this.basket.items];
