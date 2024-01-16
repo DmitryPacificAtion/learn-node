@@ -1,0 +1,22 @@
+services:
+  app:
+    image: node:18-alpine
+    command: sh -c "npm install && npm run start"
+    ports:
+      - 127.0.0.1:3001:3001
+    working_dir:
+      /app
+    volumes:
+      - ./:/app
+    environment:
+      - WORKING_FOLDER_NAME
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - learn-node-mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+volumes:
+  learn-node-mysql:
+

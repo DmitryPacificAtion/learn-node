@@ -2,10 +2,9 @@
   "name": "learn-node",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon eval $(cat .env | xargs) && $WORKING_FOLDER_NAME",
+    "start": "WORKING_FOLDER_NAME=$(grep -E '^WORKING_FOLDER_NAME\\s*=' .env | cut -d'=' -f2) && nodemon \"$WORKING_FOLDER_NAME\"/index.js",
     "format": "prettier -l --write \"**/*.js\""
   },
   "repository": {
