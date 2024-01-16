@@ -5,6 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "WORKING_FOLDER_NAME=$(grep -E '^WORKING_FOLDER_NAME\\s*=' .env | cut -d'=' -f2) && nodemon \"$WORKING_FOLDER_NAME\"/index.js",
+    "mysql:create-db": "node 05-mysql/database/migration/create-db.js",
+    "mysql:migrate-products": "node 05-mysql/database/migration/migrate-products.js",
     "format": "prettier -l --write \"**/*.js\""
   },
   "repository": {
