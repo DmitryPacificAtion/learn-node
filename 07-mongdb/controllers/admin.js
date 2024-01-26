@@ -32,7 +32,7 @@ exports.getEditProduct = (req, res, next) => {
     .catch((e) => console.error(e));
 };
 
-exports.addNewProduct = (req, res, next) => {
+exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
   Product.create({
     title,

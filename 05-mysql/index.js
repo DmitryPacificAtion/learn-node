@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const commonController = require('./controllers/common');
 const db = require('./util/db');
-
 const app = express();
 
 app.set('view engine', 'ejs');

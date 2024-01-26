@@ -3,7 +3,7 @@ const router = express.Router();
 const adminProductsController = require('../controllers/admin');
 
 router.get('/add-product', adminProductsController.getAddProduct);
-router.post('/add-product', adminProductsController.addNewProduct);
+router.post('/add-product', adminProductsController.postAddProduct);
 router.get('/products', adminProductsController.getProducts);
 router.post('/edit-product', adminProductsController.postEditProduct);
 

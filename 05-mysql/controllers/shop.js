@@ -41,33 +41,37 @@ exports.getProductDetails = (req, res, next) => {
 
 exports.getBasket = (req, res, next) => {
   Basket.getBasket((basket) => {
-    Product.fetchAll((products) => {
-      const items = products
-        .map((product) => {
-          const { id: productId } = product;
-          const item = basket.products.find(
-            ({ id: basketId }) => basketId == productId,
-          );
-          if (item) return { ...product, amount: item.amount };
-          return null;
-        })
-        .filter((i) => i);
+    Product.fetchAll()
+      .then((products) => {
+        const items = products
+          .map((product) => {
+            const { id: productId } = product;
+            const item = basket.products.find(
+              ({ id: basketId }) => basketId == productId,
+            );
+            if (item) return { ...product, amount: item.amount };
+            return null;
+          })
+          .filter((i) => i);
 
-      res.render('shop/basket', {
-        title: 'Basket',
-        path: '/basket',
-        products: items,
-      });
-    });
+        res.render('shop/basket', {
+          title: 'Basket',
+          path: '/basket',
+          products: items,
+        });
+      })
+      .catch((err) => console.error(err));
   });
 };
 
 exports.saveToBasket = (req, res, next) => {
   const { productId } = req.body;
-  Product.findById(productId, (product) =>
-    Basket.addProduct(productId, +product.price),
-  );
-  res.redirect('/basket');
+  Product.findById(productId)
+    .then(productId, (product) => {
+      Basket.addProduct(productId, +product.price);
+      res.redirect('/basket');
+    })
+    .catch((err) => console.error(err));
 };
 
 exports.getOrders = (req, res, next) => {
@@ -83,8 +87,10 @@ exports.getCheckout = (req, res, next) => {
 
 exports.removeFromBasket = (req, res, next) => {
   const { productId } = req.body;
-  Product.findById(+productId, (product) => {
-    Basket.delete(productId);
-  });
-  res.redirect('/basket');
+  Product.findById(+productId)
+    .then((product) => {
+      Basket.delete(productId);
+      res.redirect('/basket');
+    })
+    .catch((err) => console.error(err));
 };

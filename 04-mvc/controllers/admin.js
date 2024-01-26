@@ -30,7 +30,7 @@ exports.getEditProduct = (req, res, next) => {
   });
 };
 
-exports.addNewProduct = (req, res, next) => {
+exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
   const product = new Product(null, title, description, imageUrl, price);
   product.save();
