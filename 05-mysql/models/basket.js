@@ -1,19 +1,9 @@
-const fs = require('fs');
 const path = require('path');
 const rootDir = require('../util/path');
-const filePath = path.join(rootDir, 'data', 'basket.json');
-
-const saveToFile = (products) => {
-  fs.writeFile(filePath, JSON.stringify(products), (error) => {
-    if (error) {
-      console.error(error);
-    }
-  });
-};
+const db = require('../util/db');
 
 module.exports = class Basket {
   static __basket = { products: [], totalPrice: 0 };
-
   static __increasePriceAndAmount(index) {
     ++this.__basket.products[index].amount;
     this.__basket.products[index].price *= this.__basket.products[index].amount;
@@ -31,62 +21,41 @@ module.exports = class Basket {
     this.__basket.totalPrice = total;
   }
 
-  static addProduct(id, productPrice) {
-    // Fetch previous data from basket
-    fs.readFile(filePath, (error, file) => {
-      if (!error) {
-        try {
-          this.__basket = JSON.parse(file);
-        } catch {
-          throw Error("Checkout existing basket.json. Delete it if it's empty");
-        }
-      }
-
-      const index = this.__basket.products.findIndex(
-        ({ id: productId }) => productId === id,
-      );
-      const existingProducts = this.__basket.products[index];
-
-      existingProducts
-        ? this.__increasePriceAndAmount(index)
-        : this.__addNewToBasket(id, productPrice);
-      this.__updateTotalPrice();
-
-      fs.writeFile(filePath, JSON.stringify(this.__basket), (error) => {
-        console.error(error);
-      });
-    });
+  static addProduct(id) {
+    const res = db
+      .execute('SELECT * FROM basket WHERE product_id = VALUES(?)', 4)
+      .then((res) => {
+        console.log('in', res);
+      })
+      .catch((err) => console.error(err));
+    return db.execute(
+      'INSERT INTO `basket` (`product_id`, `quantity`) VALUES (?, ?)',
+      [id, quantity],
+    );
   }
 
   static delete(productId) {
-    fs.readFile(filePath, (error, file) => {
-      if (error) {
-        return;
-      }
-      const updatedCard = { ...JSON.parse(file) };
-
-      const product = updatedCard.products.find(({ id }) => id == productId);
-
-      if (!product) {
-        return;
-      }
-      updatedCard.products = updatedCard.products.filter(
-        ({ id }) => id !== productId,
-      );
-      updatedCard.totalPrice = updatedCard.totalPrice - product.price;
-
-      saveToFile(updatedCard);
-      // this.__updateTotalPrice();
-    });
+    // fs.readFile(filePath, (error, file) => {
+    //   if (error) {
+    //     return;
+    //   }
+    //   const updatedCard = { ...JSON.parse(file) };
+    //   const product = updatedCard.products.find(({ id }) => id == productId);
+    //   if (!product) {
+    //     return;
+    //   }
+    //   updatedCard.products = updatedCard.products.filter(
+    //     ({ id }) => id !== productId,
+    //   );
+    //   updatedCard.totalPrice = updatedCard.totalPrice - product.price;
+    //   saveToFile(updatedCard);
+    //   // this.__updateTotalPrice();
+    // });
   }
 
-  static getBasket(callback) {
-    fs.readFile(filePath, (error, file) => {
-      const basket = JSON.parse(file);
-      if (error) {
-        callback(null);
-      }
-      callback(basket);
-    });
+  static getBasket() {
+    return db.execute(
+      'SELECT *, price * quantity as total FROM basket left join products on product_id = id',
+    );
   }
 };
