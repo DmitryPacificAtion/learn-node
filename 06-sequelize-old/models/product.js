@@ -1,6 +1,15 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = require('../util/db');
 
+// class Product extends Model {};
+
+// Product.init({
+//   id: {
+//     type: Sequelize.INTEGER,
+//     autoIncrement: true,
+//   },
+// });
+
 const Product = sequelize.define(
   'product',
   {

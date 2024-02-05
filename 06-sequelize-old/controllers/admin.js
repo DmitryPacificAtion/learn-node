@@ -34,13 +34,16 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
-  const product = new Product.create(null, title, description, imageUrl, price)
-    .then()
-    .catch();
-  product
-    .save()
-    .then(() => res.redirect('/'))
-    .catch((e) => console.error(e));
+  Product.create({
+    title,
+    description,
+    imageUrl,
+    price,
+  })
+    .then((result) => {
+      console.log('Product was created with id#', result.id);
+    })
+    .catch((error) => console.error(error));
 };
 
 exports.getProducts = (req, res, next) => {

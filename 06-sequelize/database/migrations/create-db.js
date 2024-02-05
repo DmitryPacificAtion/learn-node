@@ -50,3 +50,4 @@ db.execute(
 db.execute(
   "INSERT INTO `learn-node`.`basket` (`product_id`, `quantity`) VALUES ('3', '1')",
 );
+

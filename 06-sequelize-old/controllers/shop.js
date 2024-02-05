@@ -1,7 +1,8 @@
 const Product = require('../models/product');
-const Basket = require('../models/basket');
+const Basket = require('../models/Basket');
 
 exports.getIndex = (req, res, next) => {
+  console.log('getIndex');
   Product.findAll()
     .then((products) => {
       res.render('shop/index', {
@@ -28,7 +29,7 @@ exports.getProductList = (req, res, next) => {
 exports.getProductDetails = (req, res, next) => {
   const { productId } = req.params;
   Product.findByPk(productId)
-    .then(([row]) => {
+    .then((row) => {
       const [product] = row;
       res.render('shop/product-details', {
         product,
@@ -40,37 +41,36 @@ exports.getProductDetails = (req, res, next) => {
 };
 
 exports.getBasket = (req, res, next) => {
-  Basket.getBasket()
-    .then(([basket]) => {
-      res.render('shop/basket', {
-        title: 'Basket',
-        path: '/basket',
-        products: basket,
-      });
-      // Product.fetchAll()
-      //   .then((products) => {
-      //     const items = products
-      //       .map((product) => {
-      //         const { id: productId } = product;
-      //         const item = basket.products.find(
-      //           ({ id: basketId }) => basketId == productId,
-      //         );
-      //         if (item) return { ...product, amount: item.amount };
-      //         return null;
-      //       })
-      //       .filter((i) => i);
-    })
-    .catch((err) => console.error(err));
+  Basket.getBasket((basket) => {
+    Product.findAll()
+      .then((products) => {
+        const items = products
+          .map((product) => {
+            const { id: productId } = product;
+            const item = basket.products.find(
+              ({ id: basketId }) => basketId == productId,
+            );
+            if (item) return { ...product, amount: item.amount };
+            return null;
+          })
+          .filter((i) => i);
+
+        res.render('shop/basket', {
+          title: 'Basket',
+          path: '/basket',
+          products: items,
+        });
+      })
+      .catch((err) => console.error(err));
+  });
 };
 
 exports.saveToBasket = (req, res, next) => {
   const { productId } = req.body;
-  Product.findByPk(productId)
-    .then(productId, (product) => {
-      Basket.addProduct(productId, +product.price);
-      res.redirect('/basket');
-    })
-    .catch((err) => console.error(err));
+  Product.findByPk(productId, (product) =>
+    Basket.addProduct(productId, +product.price),
+  );
+  res.redirect('/basket');
 };
 
 exports.getOrders = (req, res, next) => {
@@ -86,10 +86,8 @@ exports.getCheckout = (req, res, next) => {
 
 exports.removeFromBasket = (req, res, next) => {
   const { productId } = req.body;
-  Product.findByPk(+productId)
-    .then((product) => {
-      Basket.delete(productId);
-      res.redirect('/basket');
-    })
-    .catch((err) => console.error(err));
+  Product.findByPk(+productId, (product) => {
+    Basket.delete(productId);
+  });
+  res.redirect('/basket');
 };
