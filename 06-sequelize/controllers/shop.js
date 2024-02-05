@@ -2,8 +2,9 @@ const Product = require('../models/product');
 const Basket = require('../models/Basket');
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([products]) => {
+  console.log('getIndex');
+  Product.findAll()
+    .then((products) => {
       res.render('shop/index', {
         products,
         title: 'Shop',
@@ -14,7 +15,7 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getProductList = (req, res, next) => {
-  Product.fetchAll()
+  Product.findAll()
     .then(([products]) => {
       res.render('shop/product-list', {
         products,
@@ -41,24 +42,27 @@ exports.getProductDetails = (req, res, next) => {
 
 exports.getBasket = (req, res, next) => {
   Basket.getBasket((basket) => {
-    Product.fetchAll((products) => {
-      const items = products
-        .map((product) => {
-          const { id: productId } = product;
-          const item = basket.products.find(
-            ({ id: basketId }) => basketId == productId,
-          );
-          if (item) return { ...product, amount: item.amount };
-          return null;
-        })
-        .filter((i) => i);
+    console.log('basket', basket);
+    // Product.findAll()
+    //   .then(([products]) => {
+    //     const items = products
+    //       .map((product) => {
+    //         const { id: productId } = product;
+    //         const item = basket.products.find(
+    //           ({ id: basketId }) => basketId == productId,
+    //         );
+    //         if (item) return { ...product, amount: item.amount };
+    //         return null;
+    //       })
+    //       .filter((i) => i);
 
-      res.render('shop/basket', {
-        title: 'Basket',
-        path: '/basket',
-        products: items,
-      });
-    });
+    //     res.render('shop/basket', {
+    //       title: 'Basket',
+    //       path: '/basket',
+    //       products: items,
+    //     });
+    //   })
+    //   .catch((err) => console.error(err));
   });
 };
 

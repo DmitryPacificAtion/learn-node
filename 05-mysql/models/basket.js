@@ -22,12 +22,6 @@ module.exports = class Basket {
   }
 
   static addProduct(id) {
-    const res = db
-      .execute('SELECT * FROM basket WHERE product_id = VALUES(?)', 4)
-      .then((res) => {
-        console.log('in', res);
-      })
-      .catch((err) => console.error(err));
     return db.execute(
       'INSERT INTO `basket` (`product_id`, `quantity`) VALUES (?, ?)',
       [id, quantity],
@@ -35,27 +29,12 @@ module.exports = class Basket {
   }
 
   static delete(productId) {
-    // fs.readFile(filePath, (error, file) => {
-    //   if (error) {
-    //     return;
-    //   }
-    //   const updatedCard = { ...JSON.parse(file) };
-    //   const product = updatedCard.products.find(({ id }) => id == productId);
-    //   if (!product) {
-    //     return;
-    //   }
-    //   updatedCard.products = updatedCard.products.filter(
-    //     ({ id }) => id !== productId,
-    //   );
-    //   updatedCard.totalPrice = updatedCard.totalPrice - product.price;
-    //   saveToFile(updatedCard);
-    //   // this.__updateTotalPrice();
-    // });
+    return db.execute('DELETE FROM basket WHERE product_id=?', [productId]);
   }
 
   static getBasket() {
     return db.execute(
-      'SELECT *, price * quantity as total FROM basket left join products on product_id = id',
+      'SELECT *, price * quantity AS total FROM basket LEFT JOIN products ON product_id = id',
     );
   }
 };

@@ -15,8 +15,8 @@ const Product = sequelize.define(
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       autoIncrement: true,
+      allowNull: false,
       primaryKey: true,
     },
     // For example title: DataTypes.STRING,

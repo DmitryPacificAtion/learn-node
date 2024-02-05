@@ -5,9 +5,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "WORKING_FOLDER_NAME=$(grep -E '^WORKING_FOLDER_NAME\\s*=' .env | cut -d'=' -f2) && nodemon \"$WORKING_FOLDER_NAME\"/index.js",
-    "start:manual": "nodemon 05-mysql/index.js",
-    "mysql:create-db": "node 05-mysql/database/migration/create-db.js",
-    "mysql:migrate-products": "node 05-mysql/database/migration/migrate-products.js",
+    "start:basic": "nodemon 01-basic-server/index.js",
+    "start:express": "nodemon 02-express/index.js",
+    "start:templating": "nodemon 03-templating/index.js",
+    "start:mvc": "nodemon 04-mvc/index.js",
+    "start:sql": "nodemon 05-mysql/index.js",
+    "start:sequelize": "nodemon 06-sequelize/index.js",
+    "start:mongo": "nodemon 07-mongodb/index.js",
+    "start:mongoose": "nodemon 08-mongoose/index.js",
+    "start:sessions": "nodemon 09-session-and-cookies/index.js",
+    "start:auth": "nodemon 10-authorization-and-authentication/index.js",
+    "mysql:create-db": "node 06-sequelize/database/migration/create-db.js",
+    "mysql:migrate-products": "node 06-sequelize/database/migration/migrate-products.js",
     "format": "prettier -l --write \"**/*.js\""
   },
   "repository": {
