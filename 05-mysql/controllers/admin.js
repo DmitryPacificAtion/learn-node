@@ -26,7 +26,7 @@ exports.getEditProduct = (req, res, next) => {
         title: 'Edit Product',
         path: `/admin/edit-product/${product.id}`,
         editMode,
-        product,
+        product: product[0],
       });
     })
     .catch((e) => console.error(e));
@@ -34,7 +34,9 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
-  const product = new Product(null, title, description, imageUrl, price);
+  const createdAt = new Date();
+  console.log('createdAt', createdAt);
+  const product = new Product(null, title, description, imageUrl, price, createdAt, createdAt);
   product
     .save()
     .then(() => res.redirect('/'))
@@ -55,9 +57,19 @@ exports.getProducts = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
-  const product = new Product(+id, title, description, imageUrl, price);
+  const updatedAt = new Date();
+  console.log('updatedAt', updatedAt);
+  const product = new Product(
+    +id,
+    title,
+    description,
+    imageUrl,
+    price,
+    null,
+    updatedAt,
+  );
   product
-    .save()
+    .update()
     .then(() => res.redirect('/admin/products'))
     .catch((e) => console.error(e));
 };
