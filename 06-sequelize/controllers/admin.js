@@ -34,9 +34,10 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
+  // const createdAt = new Date();
   const product = new Product.create(null, title, description, imageUrl, price)
     .then()
-    .catch();
+    .catch((e) => console.error(e));
   product
     .save()
     .then(() => res.redirect('/'))
@@ -57,10 +58,15 @@ exports.getProducts = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
-  const product = new Product(+id, title, description, imageUrl, price);
-  product
-    .save()
-    .then(() => res.redirect('/admin/products'))
+  // const updatedAt = new Date();
+
+  Product.findByPk(id)
+    .then((product) => {
+      return product.update({ title, description, imageUrl, price });
+    })
+    .then(() => {
+      return res.redirect('/');
+    })
     .catch((e) => console.error(e));
 };
 

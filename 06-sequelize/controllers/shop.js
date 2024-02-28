@@ -13,7 +13,7 @@ exports.getIndex = (req, res, next) => {
     .catch((error) => console.error(error));
 };
 
-exports.getProductList = (req, res, next) => {
+exports.getProducts = (req, res, next) => {
   Product.findAll()
     .then((products) => {
       res.render('shop/product-list', {
@@ -27,9 +27,9 @@ exports.getProductList = (req, res, next) => {
 
 exports.getProductDetails = (req, res, next) => {
   const { productId } = req.params;
-  Product.findByPk(productId)
-    .then(([row]) => {
-      const [product] = row;
+  Product.findAll({ where: { id: productId } })
+    .then((products) => {
+      const product = products[0];
       res.render('shop/product-details', {
         product,
         title: product.title,
@@ -37,6 +37,18 @@ exports.getProductDetails = (req, res, next) => {
       });
     })
     .catch((err) => console.error(err));
+
+  /* 
+  // Another approach
+  Product.findByPk(productId)
+    .then((product) => {
+       res.render('shop/product-details', {
+        product,
+        title: product.title,
+        path: `/products/${product.id}`,
+      });
+    })
+    .catch((err) => console.error(err)); */
 };
 
 exports.getBasket = (req, res, next) => {
