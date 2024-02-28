@@ -6,6 +6,8 @@ const sequelize = require('./util/db');
 const ProductModel = require('./models/product');
 const BasketModel = require('./models/basket');
 const BasketItemModel = require('./models/basket-item');
+const OrderModel = require('./models/order');
+const OrderItemModel = require('./models/order-item');
 const UserModel = require('./models/user');
 const app = express();
 
@@ -41,6 +43,11 @@ BasketModel.belongsTo(UserModel);
 // =============== //
 BasketModel.belongsToMany(ProductModel, { through: BasketItemModel });
 ProductModel.belongsToMany(BasketModel, { through: BasketItemModel });
+// =============== //
+OrderModel.belongsTo(UserModel);
+UserModel.hasMany(OrderModel);
+OrderModel.belongsToMany(ProductModel, { through: OrderItemModel });
+ProductModel.belongsToMany(OrderModel, { through: OrderItemModel });
 
 sequelize
   // .sync({ force: true })

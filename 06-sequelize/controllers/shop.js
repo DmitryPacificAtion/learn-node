@@ -1,5 +1,4 @@
 const Product = require('../models/product');
-const Basket = require('../models/basket');
 
 exports.getIndex = (req, res, next) => {
   Product.findAll()
@@ -128,7 +127,6 @@ exports.saveToBasket = (req, res, next) => {
       return Product.findByPk(productId);
     })
     .then((product) => {
-      console.log('product', product);
       return fetchedBasket.addProduct(product, {
         through: { quantity },
       });
@@ -138,14 +136,42 @@ exports.saveToBasket = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  res.render('shop/orders', { title: 'Orders', path: '/orders' });
+  req.user
+    .getOrders({ include: ['products'] })
+    .then((orders) => {
+      res.render('shop/orders', { title: 'Orders', path: '/orders', orders });
+    })
+    .catch();
 };
 
-exports.getCheckout = (req, res, next) => {
-  res.render('shop/checkout', {
-    path: '/checkout',
-    pageTitle: 'Checkout',
-  });
+exports.postOrders = (req, res, next) => {
+  let fetchedBasket;
+  req.user
+    .getBasket()
+    .then((basket) => {
+      fetchedBasket = basket;
+      return basket.getProducts();
+    })
+    .then((products) => {
+      return req.user
+        .createOrder()
+        .then((order) => {
+          return order.addProducts(
+            products.map((product) => {
+              product.orderItem = { quantity: product.basketItem.quantity };
+              return product;
+            }),
+          );
+        })
+        .catch((err) => console.error(err));
+    })
+    .then(() => {
+      return fetchedBasket.setProducts(null);
+    })
+    .then(() => {
+      res.redirect('/orders');
+    })
+    .catch((err) => console.error(err));
 };
 
 exports.removeFromBasket = (req, res, next) => {
