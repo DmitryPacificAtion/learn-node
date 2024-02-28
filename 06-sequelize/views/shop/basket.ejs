@@ -10,11 +10,25 @@
     <main>
       <% if (products.length > 0) { %>
       <ol>
-        <% products.forEach(product => { %>
+        <!-- WITHOUT assosiations <% products.forEach(product => { %>
           <li>
             <p>Name: <%=product.title %></p>
             <p>Price per one: <%=product.price %></p>
             <p>Quantity: <%=product.quantity %></p>
+            <p><strong>Total price: <%=product.total%></strong></p>
+            <form action="/remove-basket-item" method="POST">
+              <button class="btn" type="submit">Remove</button>
+              <input type="hidden" name="productId" value="<%= product.id %>"/>
+            </form>
+          </li>
+          <hr />
+        <% }) %> -->
+        <!-- WITH assosiations -->
+        <% products.forEach(product => { %>
+          <li>
+            <p>Name: <%=product.title %></p>
+            <p>Price per one: <%=product.price %></p>
+            <p>Quantity: <%=product.basketItem.quantity %></p>
             <p><strong>Total price: <%=product.total%></strong></p>
             <form action="/remove-basket-item" method="POST">
               <button class="btn" type="submit">Remove</button>

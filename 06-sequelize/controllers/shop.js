@@ -52,6 +52,9 @@ exports.getProductDetails = (req, res, next) => {
 };
 
 exports.getBasket = (req, res, next) => {
+  /* 
+  // WITHOUT assosiations
+
   Basket.getBasket()
     .then(([basket]) => {
       res.render('shop/basket', {
@@ -73,15 +76,64 @@ exports.getBasket = (req, res, next) => {
       //       .filter((i) => i);
     })
     .catch((err) => console.error(err));
+  */
+
+  // WITH assosiations
+  req.user
+    .getBasket()
+    .then((basket) => {
+      return basket
+        .getProducts()
+        .then((products) => {
+          res.render('shop/basket', {
+            title: 'Basket',
+            path: '/basket',
+            products,
+          });
+        })
+        .catch((err) => console.error(err));
+    })
+    .catch((err) => console.error(err));
 };
 
 exports.saveToBasket = (req, res, next) => {
+  /*
+  // WITHOUT assosiations
   const { productId } = req.body;
   Product.findByPk(productId)
     .then(productId, (product) => {
       Basket.addProduct(productId, +product.price);
       res.redirect('/basket');
     })
+    .catch((err) => console.error(err));
+  */
+
+  // WITH assosiations
+  let fetchedBasket;
+  let quantity = 1;
+  const { productId } = req.body;
+
+  req.user
+    .getBasket()
+    .then((basket) => {
+      fetchedBasket = basket;
+      return basket.getProducts({ where: { id: productId } });
+    })
+    .then((products) => {
+      if (products.length > 0) {
+        const oldQuantity = products[0].basketItem.quantity;
+        quantity = oldQuantity + 1;
+        return products[0];
+      }
+      return Product.findByPk(productId);
+    })
+    .then((product) => {
+      console.log('product', product);
+      return fetchedBasket.addProduct(product, {
+        through: { quantity },
+      });
+    })
+    .then(() => res.redirect('/basket'))
     .catch((err) => console.error(err));
 };
 
@@ -97,11 +149,28 @@ exports.getCheckout = (req, res, next) => {
 };
 
 exports.removeFromBasket = (req, res, next) => {
+  /* 
+  // WITHOUT assosiations
   const { productId } = req.body;
-  Product.findByPk(+productId)
-    .then((product) => {
-      Basket.delete(productId);
-      res.redirect('/basket');
+    Product.findByPk(+productId)
+      .then((product) => {
+        Basket.delete(productId);
+        res.redirect('/basket');
+      })
+      .catch((err) => console.error(err));
+  */
+
+  // WITH assosiations
+  const { productId } = req.body;
+  req.user
+    .getBasket()
+    .then((basket) => {
+      return basket.getProducts({ where: { id: productId } });
     })
+    .then((products) => {
+      const product = products[0];
+      return product.basketItem.destroy();
+    })
+    .then(() => res.redirect('/basket'))
     .catch((err) => console.error(err));
 };

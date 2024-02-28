@@ -16,8 +16,12 @@ exports.getEditProduct = (req, res, next) => {
   }
 
   const { productId } = req.params;
-  Product.findByPk(productId)
-    .then((product) => {
+  // Product.findByPk(productId) // WITHOUT assosiations
+  req.user
+    .getProducts({ where: { id: productId } }) // WITH assosiations
+    .then((products) => {
+      // if WITHOUT assosiations - it would be an object instead of array
+      const product = products[0];
       if (!product) {
         return res.redirect('/');
       }
@@ -35,16 +39,40 @@ exports.getEditProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
   // const createdAt = new Date();
-  const product = Product.build({ title, description, imageUrl, price });
 
-  product
-    .save()
-    .then(() => res.redirect('/'))
+  /*
+    Bad way, but it works if we doesn't have user* assosiations
+
+    const product = Product.build({
+      title,
+      description,
+      imageUrl,
+      price,
+      userEmail: req.user.email // <--- Hardcoded dependency
+    });
+
+    product
+      .save()
+      .then(() => res.redirect('/admin/products'))
+      .catch((e) => console.error(e));
+ */
+
+  /* Good and elegand way, if we have assosiations */
+  req.user
+    .createProduct({
+      title,
+      description,
+      imageUrl,
+      price,
+    })
+    .then(() => res.redirect('/admin/products'))
     .catch((e) => console.error(e));
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  // Product.findAll() // WITHOUT assosiations
+  req.user
+    .getProducts() // WITH assosiations
     .then((products) => {
       res.render('admin/product-list', {
         products,
