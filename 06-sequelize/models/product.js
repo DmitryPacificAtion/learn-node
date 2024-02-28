@@ -15,6 +15,10 @@ const Product = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     price: {
       type: DataTypes.DOUBLE,
       allowNull: false,
@@ -22,6 +26,14 @@ const Product = sequelize.define(
     imageUrl: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      default: '2024-01-01 00:00:00',
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      default: '2024-01-01 00:00:00',
     },
   },
   { sequelize },

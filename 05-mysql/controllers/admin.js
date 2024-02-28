@@ -35,7 +35,6 @@ exports.getEditProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
   const createdAt = new Date();
-  console.log('createdAt', createdAt);
   const product = new Product(null, title, description, imageUrl, price, createdAt, createdAt);
   product
     .save()
@@ -58,7 +57,6 @@ exports.getProducts = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
   const { id, title, description, imageUrl, price } = req.body;
   const updatedAt = new Date();
-  console.log('updatedAt', updatedAt);
   const product = new Product(
     +id,
     title,

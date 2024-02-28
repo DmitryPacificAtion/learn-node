@@ -13,7 +13,7 @@ exports.getIndex = (req, res, next) => {
     .catch((error) => console.error(error));
 };
 
-exports.getProductList = (req, res, next) => {
+exports.getProducts = (req, res, next) => {
   Product.fetchAll()
     .then(([products]) => {
       res.render('shop/product-list', {
