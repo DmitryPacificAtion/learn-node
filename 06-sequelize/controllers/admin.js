@@ -35,9 +35,8 @@ exports.getEditProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
   const { title, description, imageUrl, price } = req.body;
   // const createdAt = new Date();
-  const product = new Product.create(null, title, description, imageUrl, price)
-    .then()
-    .catch((e) => console.error(e));
+  const product = Product.build({ title, description, imageUrl, price });
+
   product
     .save()
     .then(() => res.redirect('/'))
@@ -72,7 +71,7 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const { productId } = req.params;
-  Product.delete(+productId)
+  Product.destroy({ where: { id: productId } })
     .then(() => res.redirect('/admin/products'))
     .catch((e) => console.error(e));
 };
