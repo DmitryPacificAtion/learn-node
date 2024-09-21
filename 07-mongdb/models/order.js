@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../util/db');
 
-const Basket = sequelize.define('basket', {
+const Order = sequelize.define('order', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -10,4 +10,4 @@ const Basket = sequelize.define('basket', {
   },
 });
 
-module.exports = Basket;
+module.exports = Order;

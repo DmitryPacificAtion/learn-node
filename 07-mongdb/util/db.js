@@ -1,31 +1,37 @@
-const { MongoClient } = require('mongodb');
-
-// Connection URI
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri =
-  'mongodb+srv://root:Q!w2e3r4@cluster0.laev3.mongodb.net/Cluster0?retryWrites=true&w=majority';
+  'mongodb+srv://dmytro:Q!w2e3r4@atlascluster.j9lpcso.mongodb.net/?retryWrites=true&w=majority&appName=AtlasCluster';
 
-// Create a new MongoClient
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 
-async function mongoConnect(callback) {
+async function mongoConnect() {
   try {
-    // Connect the client to the server
+    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Establish and verify connection
-    callback();
+    // Send a ping to confirm a successful connection
+    await client.db('admin').command({ ping: 1 });
+    console.log(
+      'Pinged your deployment. You successfully connected to MongoDB!',
+    );
   } catch (error) {
-    console.error(error);
-    // await client.close();
-    // } finally {
-    //   // Ensures that the client will close when you finish/error
-    //   console.log('client', client);
+    console.error('Error: ', error);
   }
+  // Ensures that the client will close when you finish/error
 }
 
-const getDB = async () => {
-  // Establish and verify connection
-  return client.db();
-};
+let __db = client.db('shop');
 
+const getDB = () => {
+  if (_db) {
+    return _db;
+  }
+  throw Error('No database found!');
+};
 exports.mongoConnect = mongoConnect;
 exports.getDB = getDB;

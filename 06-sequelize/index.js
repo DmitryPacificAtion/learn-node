@@ -69,6 +69,6 @@ sequelize
     return basket;
   })
   .then(() => {
-    app.listen(3001);
+    app.listen(3001, () => console.log('Listening on port 3001'));
   })
   .catch((error) => console.error('*** ERROR! ***', error));

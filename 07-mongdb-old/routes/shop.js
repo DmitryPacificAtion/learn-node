@@ -6,7 +6,6 @@ router.get('/', productsController.getIndex);
 router.get('/basket', productsController.getBasket);
 router.post('/basket', productsController.saveToBasket);
 router.get('/orders', productsController.getOrders);
-router.post('/create-order', productsController.postOrders);
 router.get('/products', productsController.getProducts);
 router.post('/remove-basket-item', productsController.removeFromBasket);
 

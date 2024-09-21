@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <%- include('../layout/meta.ejs') %>
@@ -10,14 +10,8 @@
     <main class="centered">
       <h1 class="product__title"><%= product.title %></h1>
       <hr />
-      <div class="image">
-        <img
-          src="<%= product.imageUrl %>"
-          alt="<%= product.title %>"
-          width="600px"
-          height="auto"
-        />
-      </div>
+      <img src="<%= product.imageUrl %>" alt="<%= product.title %>" width="600px" height="auto" />
+
       <h2 class="product__price">$<%= product.price %></h2>
       <p class="product__description"><%= product.description %></p>
       <%- include('../layout/add-to-basket.ejs') %>
